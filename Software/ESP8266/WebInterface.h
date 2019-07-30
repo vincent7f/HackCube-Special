@@ -22,6 +22,7 @@ bool handleFileRead(String path) {
 #ifdef DEBUG
   Serial.println("handleFileRead: " + path);
 #endif
+  //Serial.println("handleFileRead: " + path);
   if (path.endsWith("/")) path += "RF.html";
   if (SPIFFS.exists(path)) {
     File file = SPIFFS.open(path, "r");
@@ -32,6 +33,17 @@ bool handleFileRead(String path) {
   return false;
 }
 
+
+String list_files(String dirPath) {
+  //for debug
+  String files="";
+  Dir dir = SPIFFS.openDir(dirPath);
+  
+  while (dir.next()) {
+    files += dir.fileName();
+  }
+  return files;
+}
 
 void WebInterface() {
 
@@ -94,16 +106,16 @@ void WebInterface() {
     LED_STATE(LED_RUN);
   });
 
-    server.on("/rf_setup", []() {
+  server.on("/rf_setup", []() {
     Serial.print("[RF][Setup]chip:CC1101,class:");
     Serial.print(server.arg("SnifferClass"));
     Serial.print(",freq:");
     Serial.println(server.arg("freq"));
-    
+
     server.send(200, "text/html", "");
     LED_STATE(LED_RUN);
   });
-  
+
 
   server.on("/rf_jam", []() {
     //Serial.println("[NFC]stop");
@@ -130,12 +142,12 @@ void WebInterface() {
 
 
   server.on("/rf_Replay", []() {
-    
+
     int num = server.arg("num").toInt();
     rf_Replay(num);
     server.send(200, "text/html", "");
     LED_STATE(LED_TRANSMIT, true);
-    
+
   });
 
 
@@ -152,13 +164,13 @@ void WebInterface() {
     Serial.print(",");
     Serial.println(Data);
 
-//    ajaxData_nfc = analogRead(A0);
-    
+    //    ajaxData_nfc = analogRead(A0);
+
     server.send(200, "text/html", "True");
     LED_STATE(LED_TRANSMIT, true);
   });
 
-   server.on("/rf_LigthBar", []() {
+  server.on("/rf_LigthBar", []() {
     //int num = server.arg("num").toInt();
     String Freq = server.arg("Freq");
     String Data = server.arg("Data");
@@ -169,7 +181,7 @@ void WebInterface() {
     server.send(200, "text/html", "True");
     LED_STATE(LED_TRANSMIT, true);
   });
-  
+
 
   server.on("/ajax_nfc", []() {
     server.send(200, "text/html", getajax_nfc());
@@ -273,11 +285,25 @@ void WebInterface() {
     server.send(200, "text/html", "true");
     //handleFileRead("/INFO.html");
   });
-  
+
+  // set default html page
+  server.on("/", []() {
+    String data = "";
+    data = "[HID]" + server.arg("HidData");
+    Serial.println(data);
+    LED_STATE(LED_TRANSMIT, true);
+    //    server.send(200, "text/html", "true");
+    handleFileRead("/NFC.html");
+    //if (!handleFileRead("/HID.html")) {
+
+    //String files = "files:" + list_files("/");
+    //server.send(200, "text/plain", files);
+    //}
+  });
+
   server.onNotFound([]() {
     if (!handleFileRead(server.uri()))
       server.send(404, "text/plain", "Archivo no encontrado");
   });
-  
-}
 
+}
