@@ -10,3 +10,5 @@
 * ESP8266.ino
   * 改为使用ESP8266输出Serial.print()的调试信息。
     * 注释掉setup()中的Serial.swap()一行即可。
+* /data/WIFI.html
+  * 重新开放该页面。
