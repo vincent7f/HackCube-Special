@@ -43,10 +43,12 @@
 #include <Hash.h>
 #include <FS.h>
 
+#include <ArduinoJson.h> // JSON
+#include <SD.h>
+#include <SPI.h>
+
 MDNSResponder mdns;
 APScan apScan;
-
-
 
 
 #define DEBUG;
@@ -65,20 +67,28 @@ void setup() {
   Serial.begin(9600);
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   fill_solid(leds, NUM_LEDS, CRGB::White);
+
+  SPIFFS.begin(); // support local files
+  delay(5000);
+
+  loadJsonConfig();
+  
   LED_STATE(LED_CONNECT);
   ConfigWifi(); //建立"HackCUBESpecial_XXXXXX"热点
   //ConnectWif();
   delay(100);
+  
   LED_STATE(LED_RUN);
-  SPIFFS.begin();
+  //SPIFFS.begin();
   //Serial.swap(); //将串口切换到和ATmega32u4通信串口中
-  delay(100);
+  //delay(100);
   //WebFileSetup(); //量产使用压缩后的网页,如需使用data目录中网页,请设置WebFFS变量,并使用SPIFFS上传数据
   WebInterface(); //初始化网页端接口
   server.begin(); 
 
 
   //
+  /**
   AddRfList("[RF][Sniffer]freq:433,protocol:Fixed-1,modulation:ask,func:0,data:41013");
   AddRfList("[RF][Sniffer]freq:433,protocol:Fixed-1,modulation:ask,func:c,data:41010");
   AddRfList("[RF][Sniffer]freq:315,protocol:Fixed-1,modulation:ask,func:1,data:B710");
@@ -88,10 +98,37 @@ void setup() {
   AddRfList("[RF][Sniffer]freq:315,protocol:LigthBar,modulation:ask,func:effect_1,data:26f0");
   AddRfList("[RF][Sniffer]freq:315,protocol:LigthBar,modulation:ask,func:effect_2,data:2688");
   AddRfList("[RF][Sniffer]freq:315,protocol:LigthBar,modulation:ask,func:clear,data:26d8");
+  */
+  
   //[RF][Sniffer]freq:433,protocol:keeloq,modulation:ask,data:8e56d5b5,SerialNumber:39182da
   delay(100);
   led_action = 1;
   delay(100);
+}
+
+void loadJsonConfig() {
+  String jsonConfig = "/config.json";
+
+  //File file = SD.open(jsonConfig.c_str());
+
+  if (!SPIFFS.exists(jsonConfig)) {
+    Serial.println(F(sprintf("ERROR: config file '%s' is NOT found!!!", jsonConfig.c_str())));
+  }
+  File file = SPIFFS.open(jsonConfig, "r");
+  
+  StaticJsonDocument<512> doc;
+
+  // Deserialize the JSON document
+  DeserializationError error = deserializeJson(doc, file);
+  if (error)
+    Serial.println(F("Failed to read file, using default configuration"));
+
+  // Copy values from the JsonDocument to the Config
+  char wifi_ssid[64]; 
+  strlcpy(wifi_ssid,                  // <- destination
+          doc["wifi_ssid"] | "example.com",  // <- source
+          sizeof(wifi_ssid)); 
+  Serial.println(wifi_ssid);
 }
 
 
