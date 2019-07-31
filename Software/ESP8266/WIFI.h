@@ -84,18 +84,65 @@ void ConnectWif() {
   Serial.println(WiFi.localIP());
 }
 
-void ConfigWifi() {
-  IPAddress local_IP(192, 168, 5, 1);
-  IPAddress gateway(192, 168, 5, 1);
-  IPAddress subnet(255, 255, 255, 0);
+
+IPAddress string2ip(const char* str) {
+  int ip1, ip2, ip3, ip4;
+  
+  //Serial.println("string:");
+  //Serial.println(str);
+  sscanf(str, "%d.%d.%d.%d", &ip1, &ip2, &ip3, &ip4);
+
+//  Serial.println("string to IP");
+//  Serial.println(ip1);
+//  Serial.println(ip2);
+//  Serial.println(ip3);
+//  Serial.println(ip4);
+
+  return IPAddress(ip1, ip2, ip3, ip4);
+}
+
+void ConfigWifiAP() {
+  Serial.println("ConfigWifiAP()");
+  
+  JsonObject root = configDoc.as<JsonObject>();
+
+  const char* wifi_ssid_default = getmac().c_str();
+  const char* wifi_password_default = "hackcube";
+  const char* wifi_local_ip_default = "192.168.6.1";
+  const char* wifi_gateway_default = "192.168.6.1";
+  const char* wifi_subnet_default = "255.255.255.0";
+    
+  const char* wifi_ssid = root.containsKey("wifi_ssid") ? configDoc["wifi_ssid"] : wifi_ssid_default;
+  const char* wifi_password = root.containsKey("wifi_password") ? configDoc["wifi_password"] : wifi_password_default;
+  const char* wifi_local_ip = root.containsKey("wifi_local_ip") ? configDoc["wifi_local_ip"] : wifi_local_ip_default;
+  const char* wifi_gateway = root.containsKey("wifi_gateway") ? configDoc["wifi_gateway"] : wifi_gateway_default;
+  const char* wifi_subnet = root.containsKey("wifi_subnet") ? configDoc["wifi_subnet"] : wifi_subnet_default;
+  
+  Serial.print("wifi_ssid:");
+  Serial.println(wifi_ssid);
+  Serial.print("wifi_password:");
+  Serial.println(wifi_password);
+  Serial.print("wifi_local_ip:");
+  Serial.println(wifi_local_ip);  
+  Serial.print("wifi_gateway:");
+  Serial.println(wifi_gateway);
+  Serial.print("wifi_subnet:");
+  Serial.println(wifi_subnet);
+  
+  IPAddress local_IP = string2ip(wifi_local_ip);
+  IPAddress gateway = string2ip(wifi_gateway);
+  IPAddress subnet = string2ip(wifi_subnet);
+
   WiFi.mode(WIFI_AP);
-  String AP_Name = getmac();
+//  String AP_Name = getmac();
   Serial.print("SSID:");
-  Serial.println(AP_Name);
+//  Serial.println(AP_Name);
+  Serial.println(wifi_ssid);
   Serial.print("Setting soft-AP configuration ... ");
   Serial.println(WiFi.softAPConfig(local_IP, gateway, subnet) ? "Ready" : "Failed!");
   Serial.print("Setting soft-AP ... ");
-  Serial.println(WiFi.softAP(AP_Name.c_str(), "hackcube") ? "Ready" : "Failed!");
+//  Serial.println(WiFi.softAP(AP_Name.c_str(), "hackcube") ? "Ready" : "Failed!");
+  Serial.println(WiFi.softAP(wifi_ssid, wifi_password) ? "Ready" : "Failed!");
   Serial.print("Soft-AP IP address = ");
   Serial.println(WiFi.softAPIP());
   delay(100);
@@ -113,7 +160,7 @@ void connectWifi() {
       outflag = true;
   }
   if (outflag) {
-    ConfigWifi();
+    ConfigWifiAP();
     Serial.println("out");
   } else {
     Serial.println("");
@@ -123,4 +170,3 @@ void connectWifi() {
     Serial.println(WiFi.localIP());
   }
 }
-

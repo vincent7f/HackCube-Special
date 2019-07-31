@@ -49,7 +49,10 @@
 
 MDNSResponder mdns;
 APScan apScan;
-
+  
+// Json config object
+//StaticJsonDocument<512> configDoc; //stack
+DynamicJsonDocument configDoc(4096); //heap
 
 #define DEBUG;
 ESP8266WebServer server(80);
@@ -69,12 +72,12 @@ void setup() {
   fill_solid(leds, NUM_LEDS, CRGB::White);
 
   SPIFFS.begin(); // support local files
-  delay(5000);
+  delay(10*1000);
 
   loadJsonConfig();
   
   LED_STATE(LED_CONNECT);
-  ConfigWifi(); //建立"HackCUBESpecial_XXXXXX"热点
+  ConfigWifiAP(); //建立"HackCUBESpecial_XXXXXX"热点
   //ConnectWif();
   delay(100);
   
@@ -115,20 +118,24 @@ void loadJsonConfig() {
     Serial.println(F(sprintf("ERROR: config file '%s' is NOT found!!!", jsonConfig.c_str())));
   }
   File file = SPIFFS.open(jsonConfig, "r");
-  
-  StaticJsonDocument<512> doc;
 
   // Deserialize the JSON document
-  DeserializationError error = deserializeJson(doc, file);
-  if (error)
+  DeserializationError error = deserializeJson(configDoc, file);
+  
+  if (error) {
     Serial.println(F("Failed to read file, using default configuration"));
+    Serial.println(error.c_str());
+  }
 
+  file.close();
+  
   // Copy values from the JsonDocument to the Config
-  char wifi_ssid[64]; 
-  strlcpy(wifi_ssid,                  // <- destination
-          doc["wifi_ssid"] | "example.com",  // <- source
-          sizeof(wifi_ssid)); 
-  Serial.println(wifi_ssid);
+//  char wifi_ssid[64]; 
+//  strlcpy(wifi_ssid,                  // <- destination
+//          configDoc["wifi_ssid"] | "example.com",  // <- source
+//          sizeof(wifi_ssid)); 
+//
+//  Serial.println(wifi_ssid);
 }
 
 
