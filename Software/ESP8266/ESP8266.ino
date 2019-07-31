@@ -58,7 +58,7 @@ ESP8266WebServer server(80);
 #include "SerialCommunication.h"
 #include "WIFI.h"
 
-#include "webfiles.h" //https://github.com/spacehuhn/esp8266_deauther/tree/master/utils/web_converter
+//#include "webfiles.h" //https://github.com/spacehuhn/esp8266_deauther/tree/master/utils/web_converter
 #include "WebInterface.h"
 
 void setup() {
@@ -71,9 +71,9 @@ void setup() {
   delay(100);
   LED_STATE(LED_RUN);
   SPIFFS.begin();
-  Serial.swap(); //将串口切换到和ATmega32u4通信串口中
+  //Serial.swap(); //将串口切换到和ATmega32u4通信串口中
   delay(100);
-  WebFileSetup(); //量产使用压缩后的网页,如需使用data目录中网页,请设置WebFFS变量,并使用SPIFFS上传数据
+  //WebFileSetup(); //量产使用压缩后的网页,如需使用data目录中网页,请设置WebFFS变量,并使用SPIFFS上传数据
   WebInterface(); //初始化网页端接口
   server.begin(); 
 

@@ -256,7 +256,7 @@ void WebInterface() {
         delay(800);
       }
     }
-    sendProgmem(data_RF_gz, sizeof(data_RF_gz), W_HTML);
+    //sendProgmem(data_RF_gz, sizeof(data_RF_gz), W_HTML);
     //handleFileRead("/RF.html");
   });
 
