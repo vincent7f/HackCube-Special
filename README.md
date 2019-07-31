@@ -1,7 +1,6 @@
 #  Info
 * Fork from https://github.com/UnicornTeam/HackCube-Special
-* Add customized functionalities.
-  * Easy to config Wifi ssid/password in file WIFI.h.
+* [Enhancement 新增功能](https://github.com/vincent7f/HackCube-Special/blob/master/README_Enhancement.md)
 
 #  HackCube-Special
 <p align="center"><img alt="PICTURE logo" src="https://file-temp.oss-cn-beijing.aliyuncs.com/cube.png" width="200"></p>
