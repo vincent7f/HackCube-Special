@@ -12,3 +12,15 @@
     * 注释掉setup()中的Serial.swap()一行即可。
 * /data/WIFI.html
   * 重新开放该页面。
+  
+ 
+## 引入新库
+
+### ArduinoJson
+
+在Library manager中搜索ArduinoJson并添加，作者是Benoit
+
+https://arduinojson.org/
+
+  
+ 
