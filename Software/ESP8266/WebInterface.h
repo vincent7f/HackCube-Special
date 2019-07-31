@@ -293,7 +293,7 @@ void WebInterface() {
     Serial.println(data);
     LED_STATE(LED_TRANSMIT, true);
     //    server.send(200, "text/html", "true");
-    handleFileRead("/NFC.html");
+    handleFileRead("/WIFI.html");
     //if (!handleFileRead("/HID.html")) {
 
     //String files = "files:" + list_files("/");
