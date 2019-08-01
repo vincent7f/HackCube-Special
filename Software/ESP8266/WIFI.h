@@ -104,7 +104,7 @@ IPAddress string2ip(const char* str) {
 void ConfigWifiAP() {
   Serial.println("ConfigWifiAP()");
   
-  JsonObject root = configDoc.as<JsonObject>();
+  JsonObject root = CONFIG_DOC.as<JsonObject>();
 
   const char* wifi_ssid_default = getmac().c_str();
   const char* wifi_password_default = "hackcube";
@@ -112,11 +112,11 @@ void ConfigWifiAP() {
   const char* wifi_gateway_default = "192.168.6.1";
   const char* wifi_subnet_default = "255.255.255.0";
     
-  const char* wifi_ssid = root.containsKey("wifi_ssid") ? configDoc["wifi_ssid"] : wifi_ssid_default;
-  const char* wifi_password = root.containsKey("wifi_password") ? configDoc["wifi_password"] : wifi_password_default;
-  const char* wifi_local_ip = root.containsKey("wifi_local_ip") ? configDoc["wifi_local_ip"] : wifi_local_ip_default;
-  const char* wifi_gateway = root.containsKey("wifi_gateway") ? configDoc["wifi_gateway"] : wifi_gateway_default;
-  const char* wifi_subnet = root.containsKey("wifi_subnet") ? configDoc["wifi_subnet"] : wifi_subnet_default;
+  const char* wifi_ssid = root.containsKey("wifi_ssid") ? root["wifi_ssid"] : wifi_ssid_default;
+  const char* wifi_password = root.containsKey("wifi_password") ? root["wifi_password"] : wifi_password_default;
+  const char* wifi_local_ip = root.containsKey("wifi_local_ip") ? root["wifi_local_ip"] : wifi_local_ip_default;
+  const char* wifi_gateway = root.containsKey("wifi_gateway") ? root["wifi_gateway"] : wifi_gateway_default;
+  const char* wifi_subnet = root.containsKey("wifi_subnet") ? root["wifi_subnet"] : wifi_subnet_default;
   
   Serial.print("wifi_ssid:");
   Serial.println(wifi_ssid);

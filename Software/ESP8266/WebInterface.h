@@ -292,6 +292,43 @@ void WebInterface() {
     ESP.restart();
   });
 
+  server.on("/loadconfig", []() {
+    Serial.println("load config");
+    LED_STATE(LED_TRANSMIT, true);
+
+    char* returnedMessage = loadJsonConfigString();
+    
+    if (strnlen(returnedMessage, 2048)>0) {
+      server.send(200, "text/html", returnedMessage);
+    } else {
+      server.send(404, "text/html", "ERROR: fail to load config file");
+    }
+  });
+  
+  server.on("/saveconfig", []() {
+    Serial.println("/saveconfig");
+    
+    String argConfig = server.arg("config");
+
+    Serial.println("[input argument config]");
+    Serial.println(argConfig);
+    
+    LED_STATE(LED_TRANSMIT, true);
+
+    char* returnedMessage = saveJsonConfig(argConfig);
+    
+    if (strnlen(returnedMessage, 128)==0) {
+      server.send(200, "text/html", "true");
+      delay(1000);
+      ESP.reset();
+    } else {
+      char message[256];
+      sprintf(message, "Fail to save config: %s", returnedMessage);
+      
+      server.send(200, "text/html", message);
+    }
+  });
+  
   // reset/reboot
   server.on("/reset", []() {
     Serial.println("reset system...");
