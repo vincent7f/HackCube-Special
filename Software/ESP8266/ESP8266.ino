@@ -47,12 +47,9 @@
 #include <SD.h>
 #include <SPI.h>
 
+// GLOBAL VARIABLES
 MDNSResponder mdns;
 APScan apScan;
-  
-// Json config object
-//StaticJsonDocument<512> configDoc; //stack
-DynamicJsonDocument configDoc(4096); //heap
 
 #define DEBUG;
 ESP8266WebServer server(80);
@@ -61,6 +58,9 @@ ESP8266WebServer server(80);
 #include "JSON.h"
 #include "WEB.h"
 #include "SerialCommunication.h"
+
+#include "Config.h"
+
 #include "WIFI.h"
 
 //#include "webfiles.h" //https://github.com/spacehuhn/esp8266_deauther/tree/master/utils/web_converter
@@ -72,7 +72,7 @@ void setup() {
   fill_solid(leds, NUM_LEDS, CRGB::White);
 
   SPIFFS.begin(); // support local files
-  delay(10*1000);
+  delay(6*1000);
 
   loadJsonConfig();
   
@@ -84,7 +84,7 @@ void setup() {
   LED_STATE(LED_RUN);
   //SPIFFS.begin();
   //Serial.swap(); //将串口切换到和ATmega32u4通信串口中
-  //delay(100);
+  delay(100);
   //WebFileSetup(); //量产使用压缩后的网页,如需使用data目录中网页,请设置WebFFS变量,并使用SPIFFS上传数据
   WebInterface(); //初始化网页端接口
   server.begin(); 
@@ -109,34 +109,6 @@ void setup() {
   delay(100);
 }
 
-void loadJsonConfig() {
-  String jsonConfig = "/config.json";
-
-  //File file = SD.open(jsonConfig.c_str());
-
-  if (!SPIFFS.exists(jsonConfig)) {
-    Serial.println(F(sprintf("ERROR: config file '%s' is NOT found!!!", jsonConfig.c_str())));
-  }
-  File file = SPIFFS.open(jsonConfig, "r");
-
-  // Deserialize the JSON document
-  DeserializationError error = deserializeJson(configDoc, file);
-  
-  if (error) {
-    Serial.println(F("Failed to read file, using default configuration"));
-    Serial.println(error.c_str());
-  }
-
-  file.close();
-  
-  // Copy values from the JsonDocument to the Config
-//  char wifi_ssid[64]; 
-//  strlcpy(wifi_ssid,                  // <- destination
-//          configDoc["wifi_ssid"] | "example.com",  // <- source
-//          sizeof(wifi_ssid)); 
-//
-//  Serial.println(wifi_ssid);
-}
 
 
 void loop() {
