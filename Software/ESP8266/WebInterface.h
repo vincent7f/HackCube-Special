@@ -286,6 +286,18 @@ void WebInterface() {
     //handleFileRead("/INFO.html");
   });
 
+  // reset/reboot softly
+  server.on("/restart", []() {
+    Serial.println("restart system...");
+    ESP.restart();
+  });
+
+  // reset/reboot
+  server.on("/reset", []() {
+    Serial.println("reset system...");
+    ESP.reset();
+  });
+
   // set default html page
   server.on("/", []() {
     String data = "";
