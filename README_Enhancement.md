@@ -13,6 +13,9 @@
 * /data/WIFI.html
   * 重新开放该页面。
   
+## 新功能
+* WIFI AP的配置由/data/config.json文件控制。
+  
  
 ## 引入新库
 
