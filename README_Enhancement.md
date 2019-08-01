@@ -15,7 +15,11 @@
   
 ## 新功能
 * WIFI AP的配置由/data/config.json文件控制。
-  
+* 支持通过HTTP请求reset/restart ESP8266.(Webinterface.h)
+  * URI: /reset 或 /restart
+  * reset和restart的区别：
+    * ESP.reset() is a hard reset and can leave some of the registers in the old state which can lead to problems, its more or less like the reset button on the PC.
+    * ESP.restart() tells the SDK to reboot, so its a more clean reboot, use this one if possible.
  
 ## 引入新库
 
