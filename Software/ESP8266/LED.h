@@ -217,7 +217,13 @@ void LED_Color(int r, int g, int b) {
 
 void Brightnessset(int Brightness) {
   //fill_solid(leds, NUM_LEDS, CRGB(r, g, b));
-  FastLED.setBrightness(Brightness);
+
+  int brightness=CONFIG_DOC["led_brightness"];
+  if (brightness>Brightness) {
+    brightness = Brightness;
+  }
+  
+  FastLED.setBrightness(brightness);
   FastLED.show();
 }
 
@@ -231,13 +237,10 @@ bool LED_Prompt;
 void LED_SHOW() {
   if (led_action == 1) {
     float breath = (exp(sin(millis() / 4000.0 * PI)) - 0.36787944) * 108.0;
-    FastLED.setBrightness(breath);
-    //Serial.println(breath);
-    FastLED.show();
+    Brightnessset(breath);
   } else if (led_action == 2) {
     float breath = (exp(sin(millis() / 2500.0 * PI)) - 0.36787944) * 108.0;
-    FastLED.setBrightness(breath);
-    FastLED.show();
+    Brightnessset(breath);
     //Serial.println(breath);
     if (breath < 0.01) {
       //Serial.println(breath);
@@ -256,8 +259,7 @@ void LED_SHOW() {
   } else if (led_action == 6) {
     LED_Color(255, 0, 0);
     float breath = (exp(sin(millis() / 4000.0 * PI)) - 0.36787944) * 108.0;
-    FastLED.setBrightness(breath);
-    FastLED.show();
+    Brightnessset(breath);
   }
 
   if (LED_Prompt) {
@@ -297,6 +299,7 @@ void LED_STATE(int STATE, bool Change = false) {
   switch (STATE) {
     case LED_CONNECT:
       LED_Color(255, 255, 0);
+      Brightnessset(CONFIG_DOC["led_brightness"]);
       break;
     case LED_RUN:
       LED_Color(0, 0, 255);
@@ -321,5 +324,3 @@ void LED_STATE(int STATE, bool Change = false) {
     LED_Prompt = 1;
   }
 }
-
-

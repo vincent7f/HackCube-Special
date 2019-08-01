@@ -54,12 +54,13 @@ APScan apScan;
 #define DEBUG;
 ESP8266WebServer server(80);
 
+
+#include "Config.h"
 #include "LED.h"
 #include "JSON.h"
 #include "WEB.h"
 #include "SerialCommunication.h"
 
-#include "Config.h"
 
 #include "WIFI.h"
 
@@ -71,9 +72,10 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   fill_solid(leds, NUM_LEDS, CRGB::White);
 
+  Brightnessset(1);
   SPIFFS.begin(); // support local files
   delay(6*1000);
-
+  
   loadJsonConfig();
   
   LED_STATE(LED_CONNECT);
