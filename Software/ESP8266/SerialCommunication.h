@@ -6,8 +6,8 @@ void SerialCmd(){
     delay(4);
   }
   if (Serial_data.length() > 0) {
-    Serial.print("input serial data: ");
-    Serial.println(Serial_data);
+    //Serial.print("input serial data: ");
+    //Serial.println(Serial_data);
     if (Serial_data.substring(1, 3) == "RF") {
       if (int(Serial_data.indexOf("Jam")) > 0) {
         rf_jam = Serial_data.substring(9, Serial_data.indexOf('\n') - 1);
@@ -40,6 +40,8 @@ void SerialCmd(){
     } else if (Serial_data[0] == 0x63) {
       ajaxData_rf_24l01 = Serial_data.substring(Serial_data.indexOf("data") + 5, Serial_data.length());
       LED_STATE(LED_DATA, true);
+    } else if (int(Serial_data.indexOf("yyyy")) > 0) {
+      CONFIG_DOC["xxxx"]="yyyy";
     } else {
       //Serial.print("error:");
       //Serial.println(Serial_data[0], HEX);

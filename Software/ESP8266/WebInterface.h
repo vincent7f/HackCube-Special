@@ -342,6 +342,35 @@ void WebInterface() {
     server.send(200, "text/html", "true");
   });
 
+  server.on("/sendserial", []() {
+    String cmd = server.arg("cmd");
+    Serial.println(cmd);
+    server.send(200, "text/html", "true");
+  });
+
+  server.on("/xxxx", []() {
+    Serial.print("[xxxxxxxxx]");
+    Serial.println("");
+    int counter=10;
+    String result="";
+    while (counter>0) {
+      while (Serial.available() > 0) {
+        result += char(Serial.read());
+      }
+      if (result.length()>0) {
+        break;
+      }
+      
+      counter--;
+      delay(500);
+    }
+
+    if (result.length()<=0) {
+      result = "(no result)";
+    }
+    server.send(200, "text/html", result.c_str());
+  });
+
   // set default html page
   server.on("/", []() {
     String data = "";

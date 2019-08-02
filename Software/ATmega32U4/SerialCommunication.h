@@ -52,6 +52,8 @@ void SerialCommunication() {
   if (Cube_PRINT_data.length() > 0) {
     if (Cube_PRINT_data.substring(1, 4) == "HID") { //h
       hid_attack();
+    } else if (int(Cube_PRINT_data.indexOf("xxxx")) > 0) {
+      Cube_PRINT.println("yyyy");
     } else if (Cube_PRINT_data.substring(1, 3) == "RF") {
 
       if (int(Cube_PRINT_data.indexOf("Jam")) > 0) {
