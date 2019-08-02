@@ -1,0 +1,8 @@
+{
+	"led_brightness":10,
+	"wifi_local_ip":"192.168.7.1",
+	"wifi_gateway":"192.168.7.1",
+	"wifi_subnet":"255.255.255.0", 
+	"wifi_ssid":"hackcube_config",
+	"wifi_password":"hackcube123"
+}
