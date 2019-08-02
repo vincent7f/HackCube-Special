@@ -141,5 +141,3 @@ void nfc_json() {
   server.sendHeader("Access-Control-Allow-Origin", "*");
   server.send(200, "application/json;charset=UTF-8", get_nfclist());
 }
-
-

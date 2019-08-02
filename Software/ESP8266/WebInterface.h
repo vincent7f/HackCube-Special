@@ -1,5 +1,3 @@
-
-
 String getContentType(String filename) {
   if (server.hasArg("download")) return "application/octet-stream";
   else if (filename.endsWith(".htm")) return "text/html";
@@ -19,9 +17,9 @@ String getContentType(String filename) {
 }
 
 bool handleFileRead(String path) {
-#ifdef DEBUG
-  Serial.println("handleFileRead: " + path);
-#endif
+//#ifdef DEBUG
+//  Serial.println("handleFileRead: " + path);
+//#endif
   //Serial.println("handleFileRead: " + path);
   if (path.endsWith("/")) path += "RF.html";
   if (SPIFFS.exists(path)) {
@@ -80,6 +78,8 @@ void WebInterface() {
     Serial.println(server.arg("action"));
     server.send(200, "text/html", "");
     LED_STATE(LED_RUN);
+
+    //SerialCmd();
   });
 
   server.on("/nfc_attack", []() {
@@ -293,7 +293,9 @@ void WebInterface() {
   });
 
   server.on("/loadconfig", []() {
+#ifdef DEBUG
     Serial.println("load config");
+#endif
     LED_STATE(LED_TRANSMIT, true);
 
     char* returnedMessage = loadJsonConfigString();
@@ -309,10 +311,10 @@ void WebInterface() {
     Serial.println("/saveconfig");
     
     String argConfig = server.arg("config");
-
+#ifdef DEBUG
     Serial.println("[input argument config]");
     Serial.println(argConfig);
-    
+#endif    
     LED_STATE(LED_TRANSMIT, true);
 
     char* returnedMessage = saveJsonConfig(argConfig);
@@ -331,22 +333,53 @@ void WebInterface() {
   
   // reset/reboot
   server.on("/reset", []() {
+#ifdef DEBUG
     Serial.println("reset system...");
+#endif
     ESP.reset();
     server.send(200, "text/html", "true");
   });
 
   server.on("/swapport", []() {
+#ifdef DEBUG
     Serial.println("swap port...");
+#endif
     Serial.swap();
     server.send(200, "text/html", "true");
   });
 
-  server.on("/sendserial", []() {
+  server.on("/ss", []() { // send data to AT
     String cmd = server.arg("cmd");
     Serial.println(cmd);
     server.send(200, "text/html", "true");
   });
+
+  server.on("/slog", []() {
+    server.send(200, "text/html", serial_log.c_str());
+  });
+
+  server.on("/updateport", []() {
+    int counter=10;
+    int readCounter=0;
+    String result="";
+    while (counter>0) {
+      input_data="";
+      SerialCmd();
+      if (input_data.length()>0) {
+        readCounter++;
+      }
+      
+      counter--;
+      delay(500);
+    }
+
+    char buffer[128];
+    sprintf(buffer, "read strings counter: %d", readCounter);
+    
+    server.send(200, "text/html", buffer);
+    
+  });
+  
 
   server.on("/xxxx", []() {
     Serial.print("[xxxxxxxxx]");
@@ -354,10 +387,9 @@ void WebInterface() {
     int counter=10;
     String result="";
     while (counter>0) {
-      while (Serial.available() > 0) {
-        result += char(Serial.read());
-      }
-      if (result.length()>0) {
+      input_data = "";
+      SerialCmd();
+      if (input_data.length()>0) {
         break;
       }
       
@@ -365,17 +397,17 @@ void WebInterface() {
       delay(500);
     }
 
-    if (result.length()<=0) {
-      result = "(no result)";
+    if (input_data.length()<=0) {
+      input_data = "(no result)";
     }
-    server.send(200, "text/html", result.c_str());
+    server.send(200, "text/html", input_data.c_str());
   });
 
   // set default html page
   server.on("/", []() {
     String data = "";
-    data = "[HID]" + server.arg("HidData");
-    Serial.println(data);
+    //data = "[HID]" + server.arg("HidData");
+    //Serial.println(data);
     LED_STATE(LED_TRANSMIT, true);
     //    server.send(200, "text/html", "true");
     handleFileRead("/Default.html");

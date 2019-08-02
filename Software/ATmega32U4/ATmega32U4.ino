@@ -64,16 +64,16 @@ void setup() {
   //cc1101_config();
   //Hackradio.enableReceive(RF315_att);//设置中断引脚，接收滚动码信号
   //rf24l01_SnifferSetup();//初始化nRF24L01模块，并打印寄存器数据
-  //NFC_Switch("off");  
-
+  NFC_Switch("on");
+  
 }
 void loop() {
 
   //rf24Sniffer();//轮询nRF24L01缓存寄存器接收数据
-  //SnifferEM4100();//通过轮询EM4095的OUT输出引脚解码卡号数据
+  SnifferEM4100();//通过轮询EM4095的OUT输出引脚解码卡号数据
   //AttackEM4100();//根据指令去模拟/爆破EM4100系列卡片
   SerialCommunication(); //通过串口与ESP8266 进行通信交互数据
-  delay(500);
+  //delay(500);
   /*
   if (rf_class == 1) {
     SnifferFixedCode();//嗅探固定码数据

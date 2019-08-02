@@ -20,7 +20,7 @@ unsigned long NFC_END;
 void SnifferEM4100(){
 int EM4100_VD;
 unsigned long EM4100_DATA;
-
+//Cube_PRINT.println("SnifferEM4100() in AT");
   if (EM4095.decodeTag(EM4100_DATA, EM4100_VD)) {
     if (millis() - SerialLastTime < Print_Time) {
       //mySwitch.resetAvailable();
