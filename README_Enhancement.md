@@ -17,6 +17,7 @@
 * 全局参数由/data/config.json保存，通过Config.html页面管理，由Setup.html页面进入Config.html页面。
 * WIFI AP的配置由/data/config.json文件控制。
 * 设置灯光的最大值，在config.json文件中设置"led_brightness"为整数值。
+* 访问/xxxx得到返回值yyyy，证明与AT板通信成功。
 * 支持通过HTTP请求reset/restart ESP8266.(Webinterface.h)
   * URI: /reset 或 /restart
   * reset和restart的区别：
