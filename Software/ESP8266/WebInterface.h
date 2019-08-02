@@ -78,6 +78,8 @@ void WebInterface() {
     Serial.println(server.arg("action"));
     server.send(200, "text/html", "");
     LED_STATE(LED_RUN);
+
+    //SerialCmd();
   });
 
   server.on("/nfc_attack", []() {
