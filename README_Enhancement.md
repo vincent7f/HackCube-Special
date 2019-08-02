@@ -1,3 +1,9 @@
+# 必须安装的类库
+
+* FastLED
+* ArduinoJson
+
+
 # 新增功能列表
 
 ## 小修改
