@@ -74,7 +74,8 @@ void setup() {
 
   Brightnessset(1);
   SPIFFS.begin(); // support local files
-  delay(6*1000);
+  delay(100);
+  //delay(6*1000);
   
   loadJsonConfig();
   
@@ -85,7 +86,7 @@ void setup() {
   
   LED_STATE(LED_RUN);
   //SPIFFS.begin();
-  //Serial.swap(); //将串口切换到和ATmega32u4通信串口中
+  Serial.swap(); //将串口切换到和ATmega32u4通信串口中
   delay(100);
   //WebFileSetup(); //量产使用压缩后的网页,如需使用data目录中网页,请设置WebFFS变量,并使用SPIFFS上传数据
   WebInterface(); //初始化网页端接口
@@ -96,6 +97,8 @@ void setup() {
   /**
   AddRfList("[RF][Sniffer]freq:433,protocol:Fixed-1,modulation:ask,func:0,data:41013");
   AddRfList("[RF][Sniffer]freq:433,protocol:Fixed-1,modulation:ask,func:c,data:41010");
+  handleFileRead: /WIFI.html
+  
   AddRfList("[RF][Sniffer]freq:315,protocol:Fixed-1,modulation:ask,func:1,data:B710");
   AddRfList("[RF][Sniffer]freq:315,protocol:LigthBar,modulation:ask,func:red,data:2600");
   AddRfList("[RF][Sniffer]freq:315,protocol:LigthBar,modulation:ask,func:green,data:2680");

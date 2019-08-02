@@ -6,6 +6,8 @@ void SerialCmd(){
     delay(4);
   }
   if (Serial_data.length() > 0) {
+    Serial.print("input serial data: ");
+    Serial.println(Serial_data);
     if (Serial_data.substring(1, 3) == "RF") {
       if (int(Serial_data.indexOf("Jam")) > 0) {
         rf_jam = Serial_data.substring(9, Serial_data.indexOf('\n') - 1);
@@ -45,4 +47,3 @@ void SerialCmd(){
     Serial_data = "";
   }
 }
-

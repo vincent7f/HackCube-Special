@@ -333,6 +333,13 @@ void WebInterface() {
   server.on("/reset", []() {
     Serial.println("reset system...");
     ESP.reset();
+    server.send(200, "text/html", "true");
+  });
+
+  server.on("/swapport", []() {
+    Serial.println("swap port...");
+    Serial.swap();
+    server.send(200, "text/html", "true");
   });
 
   // set default html page
@@ -342,7 +349,7 @@ void WebInterface() {
     Serial.println(data);
     LED_STATE(LED_TRANSMIT, true);
     //    server.send(200, "text/html", "true");
-    handleFileRead("/WIFI.html");
+    handleFileRead("/Default.html");
     //if (!handleFileRead("/HID.html")) {
 
     //String files = "files:" + list_files("/");
