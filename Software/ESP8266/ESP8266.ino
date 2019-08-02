@@ -31,6 +31,8 @@
       |_| |_| \__,_| \___||_|\_\\___||_.__/  \__,_| \___|
                                                                                       
     Author: mobier
+    handleFileRead: /Default.html
+    
     Email: vxxwej@gmail.com
     Git repository: https://github.com/UnicornTeam/HackCube-Special
 */
@@ -43,6 +45,7 @@
 #include <Hash.h>
 #include <FS.h>
 
+
 #include <ArduinoJson.h> // JSON
 #include <SD.h>
 #include <SPI.h>
@@ -51,7 +54,7 @@
 MDNSResponder mdns;
 APScan apScan;
 
-#define DEBUG;
+//#define DEBUG;
 ESP8266WebServer server(80);
 
 

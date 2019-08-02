@@ -124,7 +124,9 @@ void SerialCommunication() {
         EM4095.Write_ID(NFC_VD,NFC_ID);
       }
     } else {
-      Cube_PRINT.print("error:");
+      Cube_PRINT.print("input data: ");
+      Cube_PRINT.print(Cube_PRINT_data);
+      Cube_PRINT.print("; error: ");
       Cube_PRINT.println(Cube_PRINT_data[0], HEX);
     }
     Cube_PRINT_data = "";
