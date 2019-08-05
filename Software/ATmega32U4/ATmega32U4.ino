@@ -69,13 +69,8 @@ void setup() {
 }
 void loop() {
 
-<<<<<<< HEAD
   //rf24Sniffer();//轮询nRF24L01缓存寄存器接收数据
   SnifferEM4100();//通过轮询EM4095的OUT输出引脚解码卡号数据
-=======
-  rf24Sniffer();//轮询nRF24L01缓存寄存器接收数据
-  //SnifferEM4100();//通过轮询EM4095的OUT输出引脚解码卡号数据
->>>>>>> eb7585b... temp
   //AttackEM4100();//根据指令去模拟/爆破EM4100系列卡片
   SerialCommunication(); //通过串口与ESP8266 进行通信交互数据
   //delay(500);
