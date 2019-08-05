@@ -98,6 +98,10 @@ struct myNFC {
 };
 myNFC   NFClist[NFCmax];
 
+void clear_nfclist() {
+  NFCnum = 0;
+}
+
 String get_nfclist() {
   String json;
   //  int bufc = 0; //bufferCounter
