@@ -24,6 +24,7 @@
 * WIFI AP的配置由/data/config.json文件控制。
 * 设置灯光的最大值，在config.json文件中设置"led_brightness"为整数值。
 * 访问/xxxx得到返回值yyyy，证明与AT板通信成功。
+* 当点击NFC页面Read右侧开关时，清空NFC数据，清空后需要手动刷新NFC页面，否则表格中的数据不会自动清除。
 * 支持通过HTTP请求reset/restart ESP8266.(Webinterface.h)
   * URI: /reset 或 /restart
   * reset和restart的区别：
