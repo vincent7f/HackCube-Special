@@ -14,7 +14,7 @@
 ## What's HackCube-Special
 ### HackCube-Special is a portable hardware platform for radio security research. It works on multiple radio frequencies, and can receive & transmit RF signals. 
 
-> - [x] EM41xx reader
+> - [x] EM41xx reader (100-150 kHz, http://www.smartstripe.com/wp-content/uploads/2012/10/EM4100.pdf)
 > - [x] nRF24l01 transmitter and receiver
 > - [x] PT2262（3^8 Bit）transmitter and receiver
 > - [x] PT2242 （2^20 Bit）transmitter and receiver
