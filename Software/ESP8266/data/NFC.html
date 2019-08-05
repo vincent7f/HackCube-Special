@@ -1195,6 +1195,9 @@
         <div style="display:inline-block;float:left;"><h2>Read</h2>
         </div>
         <div style="display:inline-block;float:right;margin-top: 22px" >
+            <div onclick="NFC_clearList()" id='s-btn' class="btn btn-primary" style="margin: 0px auto;display: table;margin-top: 10px;">Clear List</div>
+        </div>
+        <div style="display:inline-block;float:right;margin-top: 22px" >
             <input id="NFC_Read" type="checkbox" class="al-toggle-button" checked >
         </div>
     </div>
@@ -1391,6 +1394,13 @@ document.getElementById("NFC_simulate").addEventListener('click', function(){
     
 });
 
+
+function NFC_clearList(){
+        var ajax = new XMLHttpRequest();
+        ajax.open('get','nfc_clear');
+        ajax.send();
+        location.reload();
+}
 
 function NFC_stop(){
         var ajax = new XMLHttpRequest();

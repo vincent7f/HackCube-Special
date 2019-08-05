@@ -76,6 +76,12 @@ void WebInterface() {
   server.on("/nfc_read", []() {
     Serial.print("[NFC][switch]action:");
     Serial.println(server.arg("action"));
+    server.send(200, "text/html", "");
+    LED_STATE(LED_RUN);
+    //SerialCmd();
+  });
+
+  server.on("/nfc_clear", []() {
     clear_nfclist();
     server.send(200, "text/html", "");
     LED_STATE(LED_RUN);
